@@ -35,7 +35,6 @@ const SignUp = () => {
     }
     if (!session) {
       setLoading(false);
-      Alert.alert("go to Token confirmation page");
       return router.replace(`/${email}`);
     }
   }

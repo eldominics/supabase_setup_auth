@@ -51,10 +51,8 @@ const SignIn = () => {
         )}
       </View>
 
-      <Pressable className="bg-orange-400 rounded-2xl mt-6 w-[90%] self-center">
-        <View className="h-14 items-center justify-center ">
-          <Text className="text-2xl"> Sign In</Text>
-        </View>
+      <Pressable className="bg-orange-400 rounded-2xl mt-6 w-[90%] self-center p-4">
+        <Text className="text-2xl"> Sign In</Text>
       </Pressable>
 
       <Pressable
