@@ -1,3 +1,5 @@
+import { UseGlobalUserContext } from "@/context/GlobalUserProvider";
+import { supabase } from "@/lib/supabase";
 import { Octicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -11,16 +13,21 @@ import {
 } from "react-native";
 
 const SignIn = () => {
+  const { user, session } = UseGlobalUserContext();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isSecure, setIsSecure] = useState(true);
   const [loading, setLoading] = useState(false);
+
+  if (user && session) {
+    router.replace("./(tabs)");
+  }
   return (
     <SafeAreaView className="flex-1">
-      <Text> Welcome Back!</Text>
+      <Text className="text-white"> Welcome Back!</Text>
 
       <View className="my-6">
-        <Text> Sign Into Your Account</Text>
+        <Text className="text-white"> Sign Into Your Account</Text>
       </View>
       <View className="bg-white rounded-lg m-4 shadow-lg">
         <TextInput
@@ -51,8 +58,26 @@ const SignIn = () => {
         )}
       </View>
 
-      <Pressable className="bg-orange-400 rounded-2xl mt-6 w-[90%] self-center p-4">
-        <Text className="text-2xl"> Sign In</Text>
+      <Pressable
+        onPress={async () => {
+          setLoading(true);
+
+          const { error } = await supabase.auth.signInWithPassword({
+            email: email,
+            password: password,
+            options: {}, // Prevent auto session creation
+          });
+
+          if (error) {
+            console.log(error);
+          } else {
+            console.log("Signed In");
+          }
+          setLoading(false);
+        }}
+        className="bg-orange-400 rounded-2xl mt-6 w-[90%] self-center p-4"
+      >
+        <Text className="text-2xl">{loading ? "Signing in" : "Sign In"}</Text>
       </Pressable>
 
       <Pressable
